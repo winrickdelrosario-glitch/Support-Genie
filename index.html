@@ -1233,6 +1233,7 @@
             } else {
                 subject = `Repair Status Update - Case #${ticket}`;
                 body = `Dear ${name},\n\nYour unit under case #${ticket} is currently processed at ${center}.\n\nWe will update you as soon as testing is complete.\n\nBest regards,\nSupport Operations`;
+                
             }
 
             document.getElementById('emailSubject').value = subject;
@@ -1545,7 +1546,434 @@
             ta.select();
             document.execCommand('copy');
             document.body.removeChild(ta);
-            showToast('Copied to clipboard!');
+            showToast('Copied to clipboard!');<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Philips DA HUB - Australia & New Zealand Operations</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts (Inter) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .glass-header {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(12px);
+        }
+        .active-tab {
+            background: #ffffff;
+            color: #1e40af !important;
+            box-shadow: 0 4px 14px 0 rgba(30, 64, 175, 0.15);
+            border-bottom: 3px solid #2563eb;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col selection:bg-blue-500 selection:text-white">
+
+    <!-- Top Premium Navigation Header -->
+    <header class="bg-gradient-to-r from-blue-950 via-indigo-950 to-slate-900 text-white shadow-xl sticky top-0 z-50 border-b border-blue-800/40">
+        <div class="max-w-7xl mx-auto px-4 py-3.5 flex justify-between items-center">
+            <div class="flex items-center space-x-3.5">
+                <div class="bg-gradient-to-tr from-blue-600 to-cyan-500 p-2.5 rounded-xl shadow-md shadow-blue-500/20 text-white text-xl flex items-center justify-center">
+                    <i class="fa-solid fa-bolt-lightning"></i>
+                </div>
+                <div>
+                    <div class="flex items-center space-x-2">
+                        <h1 class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-100 to-blue-200 bg-clip-text text-transparent">Philips DA HUB</h1>
+                        <span class="bg-blue-500/20 text-blue-300 border border-blue-400/30 text-[10px] font-semibold px-2 py-0.5 rounded-full uppercase tracking-wider">v2.0 Live</span>
+                    </div>
+                    <p class="text-xs text-blue-300/80 font-medium">Australia & New Zealand Support Operations Platform</p>
+                </div>
+            </div>
+
+            <!-- Quick Status Indicators -->
+            <div class="flex items-center space-x-3">
+                <button id="broadcastAlertBtn" onclick="toggleBroadcastModal()" class="relative bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-amber-300 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition flex items-center space-x-2 hidden">
+                    <i class="fa-solid fa-bullhorn text-amber-400 animate-bounce"></i> 
+                    <span>Broadcast Alert</span>
+                    <span id="alertBadge" class="bg-amber-500 text-slate-950 text-[10px] font-black w-4 h-4 rounded-full flex items-center justify-center">1</span>
+                </button>
+                <div class="hidden sm:flex items-center space-x-2 bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700/60 text-xs text-slate-300">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span class="font-medium">System Online</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Navigation Bar -->
+    <nav class="bg-white/80 backdrop-filter backdrop-blur-lg border-b border-slate-200/80 sticky top-[65px] z-40 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 flex space-x-2 py-2 overflow-x-auto">
+            <button onclick="switchTab('locator')" class="tab-btn active-tab px-4 py-2.5 rounded-lg text-xs font-bold text-slate-600 hover:text-blue-600 transition flex items-center space-x-2 whitespace-nowrap">
+                <i class="fa-solid fa-location-dot text-sm"></i> <span>Service Center Locator</span>
+            </button>
+            <button onclick="switchTab('serial')" class="tab-btn px-4 py-2.5 rounded-lg text-xs font-bold text-slate-600 hover:text-blue-600 transition flex items-center space-x-2 whitespace-nowrap">
+                <i class="fa-solid fa-barcode text-sm"></i> <span>Serial Date Converter</span>
+            </button>
+            <button onclick="switchTab('tracker')" class="tab-btn px-4 py-2.5 rounded-lg text-xs font-bold text-slate-600 hover:text-blue-600 transition flex items-center space-x-2 whitespace-nowrap">
+                <i class="fa-solid fa-magnifying-glass text-sm"></i> <span>Ticket Finder</span>
+            </button>
+            <button onclick="switchTab('generator')" class="tab-btn px-4 py-2.5 rounded-lg text-xs font-bold text-slate-600 hover:text-blue-600 transition flex items-center space-x-2 whitespace-nowrap">
+                <i class="fa-solid fa-wand-magic-sparkles text-sm"></i> <span>AI Email Generator</span>
+            </button>
+            <button onclick="switchTab('admin')" class="tab-btn px-4 py-2.5 rounded-lg text-xs font-bold text-slate-600 hover:text-blue-600 transition flex items-center space-x-2 whitespace-nowrap">
+                <i class="fa-solid fa-shield-halved text-sm"></i> <span>Support Admin</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Dynamic Content Workspace -->
+    <main class="max-w-7xl mx-auto px-4 py-8 flex-grow w-full">
+
+        <!-- TAB 1: Service Center Locator -->
+        <section id="locatorTab" class="tab-content space-y-6">
+            <div class="bg-white p-6 rounded-2xl shadow-xl shadow-slate-200/50 border border-slate-200/80">
+                <div class="flex items-center space-x-3 mb-2">
+                    <div class="p-2 bg-blue-50 text-blue-600 rounded-lg"><i class="fa-solid fa-map-location-dot text-lg"></i></div>
+                    <div>
+                        <h2 class="text-base font-bold text-slate-900">Authorized Service Center Locator (ANZ)</h2>
+                        <p class="text-xs text-slate-500">Search accredited repair hubs across Australia & New Zealand.</p>
+                    </div>
+                </div>
+                <div class="mt-4 flex flex-col sm:flex-row gap-3">
+                    <input type="text" id="serviceSearchInput" placeholder="Search by Suburb, Postcode, or City (e.g., Sydney, Auckland)..." class="flex-grow px-4 py-2.5 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
+                    <button onclick="searchServiceCenter()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-xl text-sm font-semibold shadow-md shadow-blue-500/20 transition hover:scale-[1.01]">
+                        <i class="fa-solid fa-magnifying-glass mr-1.5"></i> Search Centers
+                    </button>
+                </div>
+            </div>
+
+            <div id="serviceResults" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-md hover:shadow-lg transition">
+                    <div class="flex justify-between items-start">
+                        <h3 class="font-bold text-blue-950 text-sm">Metro Appliance Repairs Sydney</h3>
+                        <span class="bg-emerald-50 text-emerald-700 border border-emerald-200 text-[11px] px-2.5 py-0.5 rounded-full font-semibold">Authorized</span>
+                    </div>
+                    <p class="text-xs text-slate-600 mt-2 flex items-center"><i class="fa-solid fa-location-dot text-slate-400 mr-2"></i> 123 George St, Sydney NSW 2000</p>
+                    <p class="text-xs text-slate-600 mt-1 flex items-center"><i class="fa-solid fa-phone text-slate-400 mr-2"></i> +61 2 9123 4567</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-md hover:shadow-lg transition">
+                    <div class="flex justify-between items-start">
+                        <h3 class="font-bold text-blue-950 text-sm">Auckland Electrical Service Hub</h3>
+                        <span class="bg-emerald-50 text-emerald-700 border border-emerald-200 text-[11px] px-2.5 py-0.5 rounded-full font-semibold">Authorized</span>
+                    </div>
+                    <p class="text-xs text-slate-600 mt-2 flex items-center"><i class="fa-solid fa-location-dot text-slate-400 mr-2"></i> 45 Queen Street, Auckland 1010</p>
+                    <p class="text-xs text-slate-600 mt-1 flex items-center"><i class="fa-solid fa-phone text-slate-400 mr-2"></i> +64 9 300 1234</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: Serial Date Converter -->
+        <section id="serialTab" class="tab-content space-y-6 hidden">
+            <div class="bg-white p-6 rounded-2xl shadow-xl shadow-slate-200/50 border border-slate-200/80">
+                <div class="flex items-center space-x-3 mb-2">
+                    <div class="p-2 bg-indigo-50 text-indigo-600 rounded-lg"><i class="fa-solid fa-calendar-check text-lg"></i></div>
+                    <div>
+                        <h2 class="text-base font-bold text-slate-900">YYWW Production Date Converter</h2>
+                        <p class="text-xs text-slate-500">Determine appliance manufacture date and warranty eligibility.</p>
+                    </div>
+                </div>
+                <div class="mt-4 flex flex-col sm:flex-row gap-3 max-w-lg">
+                    <input type="text" id="serialInput" maxlength="4" placeholder="Enter 4-digit code (e.g., 2345)" class="flex-grow px-4 py-2.5 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 uppercase tracking-widest font-mono">
+                    <button onclick="convertSerial()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-xl text-sm font-semibold shadow-md shadow-indigo-500/20 transition hover:scale-[1.01]">
+                        <i class="fa-solid fa-calculator mr-1.5"></i> Convert Code
+                    </button>
+                </div>
+                <div id="serialResult" class="mt-4 hidden p-4 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200/80 rounded-xl text-sm text-blue-950 font-medium"></div>
+            </div>
+        </section>
+
+        <!-- TAB 3: Ticket Finder -->
+        <section id="trackerTab" class="tab-content space-y-6 hidden">
+            <div class="bg-white p-6 rounded-2xl shadow-xl shadow-slate-200/50 border border-slate-200/80">
+                <div class="flex items-center space-x-3 mb-2">
+                    <div class="p-2 bg-purple-50 text-purple-600 rounded-lg"><i class="fa-solid fa-magnifying-glass-location text-lg"></i></div>
+                    <div>
+                        <h2 class="text-base font-bold text-slate-900">Multi-Field Ticket Tracker Finder</h2>
+                        <p class="text-xs text-slate-500">Search records using Ticket Number, DN, Connote, or Customer Name.</p>
+                    </div>
+                </div>
+                <div class="mt-4 flex flex-col sm:flex-row gap-3">
+                    <input type="text" id="ticketSearchInput" placeholder="Search Ex: Ticket: 6795566 | DN: 8007869939 | Connote: NIMZ00169329 | Name: Sue Lightfoot" class="flex-grow px-4 py-2.5 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 transition">
+                    <button onclick="searchTicket()" class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2.5 rounded-xl text-sm font-semibold shadow-md shadow-purple-500/20 transition hover:scale-[1.01]">
+                        <i class="fa-solid fa-search mr-1.5"></i> Find Record
+                    </button>
+                </div>
+            </div>
+            <div id="ticketResult" class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-lg hidden"></div>
+        </section>
+
+        <!-- TAB 4: AI Email Generator -->
+        <section id="generatorTab" class="tab-content space-y-6 hidden">
+            <div class="bg-white p-6 rounded-2xl shadow-xl shadow-slate-200/50 border border-slate-200/80 space-y-5">
+                <div class="flex items-center space-x-3">
+                    <div class="p-2 bg-amber-50 text-amber-600 rounded-lg"><i class="fa-solid fa-wand-magic-sparkles text-lg"></i></div>
+                    <div>
+                        <h2 class="text-base font-bold text-slate-900">AI Email Response Enhancer</h2>
+                        <p class="text-xs text-slate-500">Draft or refine customer emails with professional AI polishing.</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Interaction Scenario</label>
+                        <select id="emailScenario" class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500">
+                            <option value="warranty">Warranty Replacement Approved</option>
+                            <option value="proof">Request for Valid Proof of Purchase</option>
+                            <option value="escalation">Escalation Update to Customer</option>
+                            <option value="closing">Ticket Resolution & Closing Notice</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Customer Name</label>
+                        <input type="text" id="customerNameInput" placeholder="e.g., Sue Lightfoot" class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Agent Draft / Notes (Compose or Paste Draft Here)</label>
+                    <textarea id="agentDraftInput" rows="3" placeholder="Type or paste your quick draft notes here... The AI will enhance grammar, flow, and sentence construction." class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"></textarea>
+                </div>
+
+                <button onclick="generateAIEmail()" class="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white px-6 py-2.5 rounded-xl text-sm font-bold shadow-md shadow-amber-500/20 transition hover:scale-[1.01] flex items-center space-x-2">
+                    <i class="fa-solid fa-sparkles"></i> <span>Enhance & Generate Email</span>
+                </button>
+
+                <div id="emailOutputContainer" class="hidden mt-4 space-y-2 pt-4 border-t border-slate-100">
+                    <label class="block text-xs font-bold text-slate-700">Polished AI Output Response</label>
+                    <textarea id="generatedEmailBox" rows="6" class="w-full p-4 bg-slate-900 text-slate-100 border border-slate-800 rounded-xl text-sm font-mono focus:outline-none"></textarea>
+                    <button onclick="copyEmailText()" class="bg-slate-800 hover:bg-slate-900 text-white text-xs px-4 py-2 rounded-lg font-semibold transition flex items-center space-x-1.5"><i class="fa-solid fa-copy"></i> <span>Copy to Clipboard</span></button>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 5: Support Admin -->
+        <section id="adminTab" class="tab-content space-y-6 hidden">
+            <div id="adminLoginBox" class="bg-white p-8 rounded-2xl shadow-xl shadow-slate-200/50 border border-slate-200/80 max-w-md mx-auto">
+                <div class="text-center mb-6">
+                    <div class="w-12 h-12 bg-slate-100 text-slate-800 rounded-2xl flex items-center justify-center mx-auto mb-2 text-xl shadow-inner"><i class="fa-solid fa-lock"></i></div>
+                    <h2 class="text-lg font-bold text-slate-900">Support Admin Portal</h2>
+                    <p class="text-xs text-slate-500">Internal Management & Operations Control</p>
+                </div>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Username</label>
+                        <input type="text" id="adminUser" placeholder="Enter username" class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-slate-800">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Password</label>
+                        <input type="password" id="adminPass" placeholder="Enter password" class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-slate-800">
+                    </div>
+                    <button onclick="handleAdminLogin()" class="w-full bg-slate-900 hover:bg-slate-800 text-white py-2.5 rounded-xl text-sm font-bold shadow-md transition">Secure Login</button>
+                    <p id="loginError" class="text-xs text-red-500 text-center font-medium hidden">Invalid credentials. Access denied.</p>
+                </div>
+            </div>
+
+            <div id="adminDashboard" class="bg-white p-6 rounded-2xl shadow-xl shadow-slate-200/50 border border-slate-200/80 hidden space-y-5">
+                <div class="flex justify-between items-center border-b border-slate-100 pb-4">
+                    <div class="flex items-center space-x-2">
+                        <i class="fa-solid fa-sliders text-blue-600"></i>
+                        <h2 class="text-base font-bold text-slate-900">Admin Control Panel</h2>
+                    </div>
+                    <button onclick="handleAdminLogout()" class="text-xs text-red-600 font-semibold hover:underline">Log Out</button>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Broadcast Hot Pop Alert Message</label>
+                    <textarea id="broadcastInput" rows="2" placeholder="Type broadcast message for all agents..." class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm mb-3 focus:outline-none focus:ring-2 focus:ring-emerald-500"></textarea>
+                    <button onclick="publishBroadcast()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-xl text-xs font-bold shadow-md shadow-emerald-500/20 transition">Publish Broadcast Alert</button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Dynamic Hot Pop Alert Modal -->
+    <div id="hotPopModal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white max-w-md w-full p-6 rounded-2xl shadow-2xl border-t-4 border-amber-500 space-y-4 animate-in fade-in zoom-in duration-200">
+            <div class="flex items-center space-x-3 text-amber-600">
+                <i class="fa-solid fa-triangle-exclamation text-2xl animate-pulse"></i>
+                <h3 class="font-bold text-lg text-slate-900">Important Operations Alert</h3>
+            </div>
+            <p id="broadcastMessageDisplay" class="text-sm text-slate-700 bg-amber-50/80 p-4 rounded-xl border border-amber-200/80 leading-relaxed font-medium"></p>
+            <div class="flex justify-end">
+                <button onclick="acknowledgeAlert()" class="bg-slate-900 hover:bg-slate-800 text-white px-5 py-2.5 rounded-xl text-xs font-bold shadow-md transition">Acknowledge & Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modern Minimalist Footer -->
+    <footer class="text-center py-4 text-xs text-slate-400 border-t border-slate-200/80 bg-white mt-auto">
+        Philips DA HUB (ANZ Customer Operations) &copy; 2026 - Internal Agent Support Platform
+    </footer>
+
+    <!-- Core App Logic -->
+    <script>
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active-tab');
+            });
+            document.getElementById(tabId + 'Tab').classList.remove('hidden');
+            event.currentTarget.classList.add('active-tab');
+        }
+
+        function searchServiceCenter() {
+            const query = document.getElementById('serviceSearchInput').value.trim();
+            if(!query) {
+                alert('Please enter a location or postcode.');
+                return;
+            }
+            alert(`Searching authorized service centers near: ${query}`);
+        }
+
+        function convertSerial() {
+            const code = document.getElementById('serialInput').value.trim();
+            const resultBox = document.getElementById('serialResult');
+            resultBox.classList.remove('hidden');
+            if(code.length !== 4 || isNaN(code)) {
+                resultBox.innerHTML = '<span class="text-red-600 font-bold">Error:</span> Please enter a valid 4-digit numeric YYWW production code.';
+                return;
+            }
+            const yy = code.substring(0, 2);
+            const ww = code.substring(2, 4);
+            resultBox.innerHTML = `<strong>Production Year:</strong> 20${yy} &nbsp;|&nbsp; <strong>Manufacture Week:</strong> Week ${ww}<br><span class="text-xs text-slate-500 font-normal mt-1 block">Warranty eligibility calculated from production code per ANZ guidelines.</span>`;
+        }
+
+        const mockDatabase = [
+            { ticket: "6795566", dn: "8007869939", connote: "NIMZ00169329", name: "Sue Lightfoot", product: "Philips Airfryer XXL", status: "In Transit" },
+            { ticket: "6795892", dn: "8007912345", connote: "NIMZ00188992", name: "John Smith", product: "Philips PerfectCare Steam Generator", status: "Resolved" }
+        ];
+
+        function searchTicket() {
+            const query = document.getElementById('ticketSearchInput').value.trim().toLowerCase();
+            const resultDiv = document.getElementById('ticketResult');
+            resultDiv.classList.remove('hidden');
+            
+            if(!query) {
+                resultDiv.innerHTML = '<p class="text-xs text-red-500 font-bold">Please enter a search term (Ticket #, DN, Connote, or Customer Name).</p>';
+                return;
+            }
+
+            const match = mockDatabase.find(item => 
+                item.ticket.toLowerCase() === query || 
+                item.dn.toLowerCase() === query || 
+                item.connote.toLowerCase() === query || 
+                item.name.toLowerCase().includes(query)
+            );
+
+            if(match) {
+                resultDiv.innerHTML = `
+                    <div class="flex items-center space-x-2 mb-3">
+                        <i class="fa-solid fa-circle-check text-emerald-500 text-lg"></i>
+                        <h3 class="font-bold text-slate-900 text-sm">Matching Record Found</h3>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-slate-700 bg-slate-50 p-4 rounded-xl border border-slate-200/80">
+                        <div><strong class="text-slate-500">Ticket Number:</strong> <span class="font-bold text-slate-900">${match.ticket}</span></div>
+                        <div><strong class="text-slate-500">DN Number:</strong> <span class="font-bold text-slate-900">${match.dn}</span></div>
+                        <div><strong class="text-slate-500">Connote:</strong> <span class="font-bold text-slate-900">${match.connote}</span></div>
+                        <div><strong class="text-slate-500">Customer Name:</strong> <span class="font-bold text-slate-900">${match.name}</span></div>
+                        <div><strong class="text-slate-500">Product:</strong> ${match.product}</div>
+                        <div><strong class="text-slate-500">Status:</strong> <span class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded-md font-bold">${match.status}</span></div>
+                    </div>
+                `;
+            } else {
+                resultDiv.innerHTML = `<p class="text-xs text-slate-500">No matching record found for "<strong>${query}</strong>". Try searching for <strong>6795566</strong>, <strong>8007869939</strong>, <strong>NIMZ00169329</strong>, or <strong>Sue Lightfoot</strong>.</p>`;
+            }
+        }
+
+        function generateAIEmail() {
+            const scenario = document.getElementById('emailScenario').value;
+            const customer = document.getElementById('customerNameInput').value.trim() || 'Valued Customer';
+            const draft = document.getElementById('agentDraftInput').value.trim();
+            const outputBox = document.getElementById('generatedEmailBox');
+            
+            document.getElementById('emailOutputContainer').classList.remove('hidden');
+
+            let bodyText = "";
+            if(scenario === 'warranty') {
+                bodyText = `Dear ${customer},\n\nThank you for contacting Philips Domestic Appliances Support ANZ. We are pleased to inform you that your warranty replacement claim has been successfully approved.\n\n${draft ? "Agent Notes / Specific Details:\n" + draft + "\n\n" : ""}Our logistics team will dispatch your replacement unit shortly. Please let us know if you have any questions.\n\nWarm regards,\nPhilips DA Support Team`;
+            } else if(scenario === 'proof') {
+                bodyText = `Dear ${customer},\n\nThank you for reaching out to Philips Support. To proceed with your service request, kindly provide a valid proof of purchase (tax invoice or receipt).\n\n${draft ? "Additional Agent Note:\n" + draft + "\n\n" : ""}You may reply directly to this email attaching the photo or PDF of your receipt.\n\nBest regards,\nPhilips DA Support Team`;
+            } else if(scenario === 'escalation') {
+                bodyText = `Dear ${customer},\n\nWe are writing to provide an update regarding your ongoing case escalation.\n\n${draft ? "Latest Update Notes:\n" + draft + "\n\n" : ""}We are closely coordinating with our technical team to resolve this as swiftly as possible. Thank you for your continued patience.\n\nKind regards,\nPhilips DA Support Team`;
+            } else {
+                bodyText = `Dear ${customer},\n\nWe are confirming that your ticket has been successfully resolved.\n\n${draft ? "Resolution Summary:\n" + draft + "\n\n" : ""}Thank you for choosing Philips. Have a wonderful day!\n\nWarm regards,\nPhilips DA Support Team`;
+            }
+
+            outputBox.value = bodyText;
+        }
+
+        function copyEmailText() {
+            const box = document.getElementById('generatedEmailBox');
+            box.select();
+            navigator.clipboard.writeText(box.value);
+            alert('Polished email copied to clipboard!');
+        }
+
+        function handleAdminLogin() {
+            const user = document.getElementById('adminUser').value.trim();
+            const pass = document.getElementById('adminPass').value.trim();
+            const err = document.getElementById('loginError');
+
+            if(user === 'ADMIN' && pass === 'ADMIN12345') {
+                document.getElementById('adminLoginBox').classList.add('hidden');
+                document.getElementById('adminDashboard').classList.remove('hidden');
+                err.classList.add('hidden');
+            } else {
+                err.classList.remove('hidden');
+            }
+        }
+
+        function handleAdminLogout() {
+            document.getElementById('adminUser').value = '';
+            document.getElementById('adminPass').value = '';
+            document.getElementById('adminDashboard').classList.add('hidden');
+            document.getElementById('adminLoginBox').classList.remove('hidden');
+        }
+
+        function publishBroadcast() {
+            const msg = document.getElementById('broadcastInput').value.trim();
+            if(!msg) {
+                alert('Please enter a broadcast message.');
+                return;
+            }
+            localStorage.setItem('philips_broadcast_alert', msg);
+            alert('Broadcast alert published successfully to all agents!');
+            document.getElementById('broadcastInput').value = '';
+            checkBroadcastAlert();
+        }
+
+        function checkBroadcastAlert() {
+            const activeAlert = localStorage.getItem('philips_broadcast_alert');
+            const alertBtn = document.getElementById('broadcastAlertBtn');
+            if(activeAlert) {
+                alertBtn.classList.remove('hidden');
+                document.getElementById('broadcastMessageDisplay').innerText = activeAlert;
+            } else {
+                alertBtn.classList.add('hidden');
+            }
+        }
+
+        function toggleBroadcastModal() {
+            document.getElementById('hotPopModal').classList.remove('hidden');
+        }
+
+        function acknowledgeAlert() {
+            localStorage.removeItem('philips_broadcast_alert');
+            document.getElementById('hotPopModal').classList.add('hidden');
+            document.getElementById('broadcastAlertBtn').classList.add('hidden');
+        }
+
+        window.onload = function() {
+            checkBroadcastAlert();
+        };
+    </script>
+</body>
+</html>
         }
     </script>
 </body>
